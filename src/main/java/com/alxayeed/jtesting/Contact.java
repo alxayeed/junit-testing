@@ -19,6 +19,10 @@ public class Contact {
 		return lastName;
 	}
 
+	public String getPhoneNumber(){
+		return phoneNumber;
+	}
+
 	public void validateFirstName() {
 		if (this.firstName.isEmpty())
 			throw new RuntimeException("First Name Cannot be null or empty");
@@ -34,7 +38,7 @@ public class Contact {
 			throw new RuntimeException("Phone Name Cannot be null or empty");
 		}
 
-		if (this.phoneNumber.length() != 10) {
+		if (this.phoneNumber.length() != 11) {
 			throw new RuntimeException("Phone Number Should be 10 Digits Long");
 		}
 		if (!this.phoneNumber.matches("\\d+")) {
