@@ -9,11 +9,10 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BooleanSupplier;
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContactManagerTests {
