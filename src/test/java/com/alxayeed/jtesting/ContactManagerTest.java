@@ -94,22 +94,7 @@ class ContactManagerTests {
 		Assertions.assertEquals(1, contactManager.getAllContacts().size());
 	}
 
-	@DisplayName("Repeat a test")
-	@RepeatedTest(value = 3, name = "ReapeatTest runs {currentRepetition} of {totalRepetitions} times")
-	public void RepeatTest() {
-		contactManager.addContact("Al", "Sayeed", "01683338978");
-		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-		Assertions.assertEquals(1, contactManager.getAllContacts().size());
-	}
 
-	@DisplayName("Parameterized test with value source")
-	@ParameterizedTest
-	@ValueSource(strings = {"01612345678", "01712345678", "01812345678"})
-	public void parameterizedValueSource(String phoneNumber) {
-		contactManager.addContact("Al", "Sayeed", phoneNumber);
-		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-		Assertions.assertEquals(1, contactManager.getAllContacts().size());
-	}
 
 	@DisplayName("Parameterized test with method source")
 	@ParameterizedTest
@@ -124,22 +109,48 @@ class ContactManagerTests {
 		return Arrays.asList("01612345678", "01712345678", "01812345678");
 	}
 
-	@DisplayName("Parameterized test with CSV source")
-	@ParameterizedTest
-	@CsvSource({"01612345678", "01712345678", "01812345678"})
-	public void parameterizedCsvSource(String phoneNumber) {
-		contactManager.addContact("Al", "Sayeed", phoneNumber);
-		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	@Nested
+	class RepeatedNestedTest{
+		@DisplayName("Repeat a test")
+		@RepeatedTest(value = 3, name = "ReapeatTest runs {currentRepetition} of {totalRepetitions} times")
+		public void RepeatTest() {
+			contactManager.addContact("Al", "Sayeed", "01683338978");
+			Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+			Assertions.assertEquals(1, contactManager.getAllContacts().size());
+		}
+
 	}
 
-	@DisplayName("Parameterized test with CSV File source")
-	@ParameterizedTest
-	@CsvFileSource(resources = "/data.csv")
-	public void parameterizedCsvFileSource(String phoneNumber) {
-		contactManager.addContact("Al", "Sayeed", phoneNumber);
-		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
-		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	@Nested
+	class parameterizedNestedTest{
+		@DisplayName("Parameterized test with value source")
+		@ParameterizedTest
+		@ValueSource(strings = {"01612345678", "01712345678", "01812345678"})
+		public void parameterizedValueSource(String phoneNumber) {
+			contactManager.addContact("Al", "Sayeed", phoneNumber);
+			Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+			Assertions.assertEquals(1, contactManager.getAllContacts().size());
+		}
+
+
+		@DisplayName("Parameterized test with CSV source")
+		@ParameterizedTest
+		@CsvSource({"01612345678", "01712345678", "01812345678"})
+		public void parameterizedCsvSource(String phoneNumber) {
+			contactManager.addContact("Al", "Sayeed", phoneNumber);
+			Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+			Assertions.assertEquals(1, contactManager.getAllContacts().size());
+		}
+
+		@DisplayName("Parameterized test with CSV File source")
+		@ParameterizedTest
+		@CsvFileSource(resources = "/data.csv")
+		public void parameterizedCsvFileSource(String phoneNumber) {
+			contactManager.addContact("Al", "Sayeed", phoneNumber);
+			Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+			Assertions.assertEquals(1, contactManager.getAllContacts().size());
+		}
+
 	}
 
 }
