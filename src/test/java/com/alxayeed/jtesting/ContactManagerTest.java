@@ -4,8 +4,15 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -15,6 +22,11 @@ class ContactManagerTests {
 	@BeforeEach
 	public void setup(){
 		contactManager = new ContactManager();
+	}
+
+	@AfterAll
+	public void tearDownAll(){
+		System.out.println("Clean up test data");
 	}
 
 	@Test
@@ -85,17 +97,49 @@ class ContactManagerTests {
 	@DisplayName("Repeat a test")
 	@RepeatedTest(value = 3, name = "ReapeatTest runs {currentRepetition} of {totalRepetitions} times")
 	public void RepeatTest() {
-		Assumptions.assumeTrue("TEST".equals(System.getProperty("ENV")));
 		contactManager.addContact("Al", "Sayeed", "01683338978");
 		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
 		Assertions.assertEquals(1, contactManager.getAllContacts().size());
 	}
 
+	@DisplayName("Parameterized test with value source")
+	@ParameterizedTest
+	@ValueSource(strings = {"01612345678", "01712345678", "01812345678"})
+	public void parameterizedValueSource(String phoneNumber) {
+		contactManager.addContact("Al", "Sayeed", phoneNumber);
+		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	}
 
+	@DisplayName("Parameterized test with method source")
+	@ParameterizedTest
+	@MethodSource("getPhoneNumberList")
+	public void parameterizedMethodSource(String phoneNumber) {
+		contactManager.addContact("Al", "Sayeed", phoneNumber);
+		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	}
 
-	@AfterAll
-	public void tearDownAll(){
-		System.out.println("Clean up test data");
+	public List<String> getPhoneNumberList(){
+		return Arrays.asList("01612345678", "01712345678", "01812345678");
+	}
+
+	@DisplayName("Parameterized test with CSV source")
+	@ParameterizedTest
+	@CsvSource({"01612345678", "01712345678", "01812345678"})
+	public void parameterizedCsvSource(String phoneNumber) {
+		contactManager.addContact("Al", "Sayeed", phoneNumber);
+		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	}
+
+	@DisplayName("Parameterized test with CSV File source")
+	@ParameterizedTest
+	@CsvFileSource(resources = "/data.csv")
+	public void parameterizedCsvFileSource(String phoneNumber) {
+		contactManager.addContact("Al", "Sayeed", phoneNumber);
+		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+		Assertions.assertEquals(1, contactManager.getAllContacts().size());
 	}
 
 }
