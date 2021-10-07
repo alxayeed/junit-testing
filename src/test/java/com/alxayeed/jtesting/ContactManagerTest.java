@@ -1,6 +1,9 @@
 package com.alxayeed.jtesting;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.function.BooleanSupplier;
@@ -56,14 +59,29 @@ class ContactManagerTests {
 		});
 	}
 
-	@AfterEach
-	public void tearDown(){
-		System.out.println("Invoked after each method");  
+	@Test
+	@DisplayName("Test Disable OS")
+	@DisabledOnOs(value = OS.LINUX, disabledReason = "Test Disabled on Linux OS")
+	public void testDisabledOs(){
+		ContactManager contactManager = new ContactManager();
+		Assertions.assertThrows(RuntimeException.class, ()->{
+			contactManager.addContact("Al", "Sayeed",null);
+		});
+	}
+
+	@Test
+	@DisplayName("Test Enable OS")
+	@EnabledOnOs(value = OS.MAC, disabledReason = "Test Only on Mac OS")
+	public void testEnabledOs(){
+		ContactManager contactManager = new ContactManager();
+		Assertions.assertThrows(RuntimeException.class, ()->{
+			contactManager.addContact("Al", "Sayeed",null);
+		});
 	}
 
 	@AfterAll
 	public void tearDownAll(){
-		System.out.println("Invoked after All methods");
+		System.out.println("Clean up test data");
 	}
 
 }
