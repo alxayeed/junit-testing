@@ -73,7 +73,14 @@ class ContactManagerTests {
 		});
 	}
 
-
+	@Test
+	@DisplayName("Create contact only on Dev system")
+	public void shouldAddContactOnDev() {
+		Assumptions.assumeTrue("TEST".equals(System.getProperty("ENV")));
+		contactManager.addContact("Al", "Sayeed", "01683338978");
+		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	}
 
 
 
