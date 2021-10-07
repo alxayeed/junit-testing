@@ -82,6 +82,15 @@ class ContactManagerTests {
 		Assertions.assertEquals(1, contactManager.getAllContacts().size());
 	}
 
+	@DisplayName("Repeat a test")
+	@RepeatedTest(value = 3, name = "ReapeatTest runs {currentRepetition} of {totalRepetitions} times")
+	public void RepeatTest() {
+		Assumptions.assumeTrue("TEST".equals(System.getProperty("ENV")));
+		contactManager.addContact("Al", "Sayeed", "01683338978");
+		Assertions.assertFalse(contactManager.getAllContacts().isEmpty());
+		Assertions.assertEquals(1, contactManager.getAllContacts().size());
+	}
+
 
 
 	@AfterAll
