@@ -1,13 +1,18 @@
 package com.alxayeed.jtesting;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.function.BooleanSupplier;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContactManagerTests {
+	ContactManager contactManager;
+
+	@BeforeEach
+	public void setup(){
+		contactManager = new ContactManager();
+	}
 
 	@Test
 	@DisplayName("Test if contact is successfully created or not")
@@ -49,6 +54,16 @@ class ContactManagerTests {
 		Assertions.assertThrows(RuntimeException.class, ()->{
 			contactManager.addContact("Al", "Sayeed",null);
 		});
+	}
+
+	@AfterEach
+	public void tearDown(){
+		System.out.println("Invoked after each method");  
+	}
+
+	@AfterAll
+	public void tearDownAll(){
+		System.out.println("Invoked after All methods");
 	}
 
 }
